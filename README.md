@@ -1,115 +1,115 @@
-# 以太坊區塊瀏覽器
+# Ethereum Block Explorer
 
-這是一個使用 React 和 AlchemySDK 構建的以太坊區塊瀏覽器，可以讓使用者瀏覽以太坊區塊鏈上的區塊、交易和地址資訊。
+This is an Ethereum block explorer built with React and AlchemySDK that allows users to browse blocks, transactions, and address information on the Ethereum blockchain.
 
-![示例圖片](https://github.com/yoyoj1023/dapps/blob/main/08-au-blockexplorer/sample1.png)
+![Sample Image](https://github.com/yoyoj1023/dapps/blob/main/08-au-blockexplorer/sample1.png)
 
-![示例圖片](https://github.com/yoyoj1023/dapps/blob/main/08-au-blockexplorer/sample2.png)
+![Sample Image](https://github.com/yoyoj1023/dapps/blob/main/08-au-blockexplorer/sample2.png)
 
-- 部署網址：https://au-blockexplorer.vercel.app/
+- Deployment URL: https://au-blockexplorer.vercel.app/
 
-## 功能特點
+## Features
 
-- 顯示最新的以太坊區塊和交易
-- 區塊詳情頁面，包含區塊的完整資訊和交易列表
-- 交易詳情頁面，包含交易的詳細資訊和事件日誌
-- 地址頁面，顯示 ETH 餘額和 ERC-20 代幣餘額
-- 搜尋功能，支援區塊號碼、交易雜湊和地址
-- 響應式設計，適用於各種裝置
+- Display latest Ethereum blocks and transactions
+- Block detail page with complete block information and transaction list
+- Transaction detail page with detailed transaction information and event logs
+- Address page showing ETH balance and ERC-20 token balances
+- Search functionality supporting block numbers, transaction hashes, and addresses
+- Responsive design suitable for various devices
 
-## 技術棧
+## Tech Stack
 
-- React.js - 前端框架
-- React Router - 前端路由
-- AlchemySDK - 與以太坊區塊鏈交互
-- ethers.js - 以太坊工具庫
-- date-fns - 日期時間格式化工具
+- React.js - Frontend framework
+- React Router - Frontend routing
+- AlchemySDK - Interact with Ethereum blockchain
+- ethers.js - Ethereum utility library
+- date-fns - Date and time formatting tools
 
-## 安裝與運行
+## Installation and Setup
 
-### 前置需求
+### Prerequisites
 
-- Node.js 和 npm/yarn
-- Alchemy API 金鑰 (免費註冊獲取)
+- Node.js and npm/yarn
+- Alchemy API key (free registration required)
 
-### 設置步驟
+### Setup Steps
 
-1. 複製此專案到本地：
+1. Clone this project locally:
 
 ```bash
-git clone <專案URL>
+git clone <project-url>
 cd ethereum-block-explorer
 ```
 
-2. 安裝依賴：
+2. Install dependencies:
 
 ```bash
 yarn install
-# 或
+# or
 npm install
 ```
 
-3. 在根目錄創建 `.env` 檔案，並添加你的 Alchemy API 金鑰：
+3. Create a `.env` file in the root directory and add your Alchemy API key:
 
 ```
 REACT_APP_ALCHEMY_API_KEY=YOUR_ALCHEMY_API_KEY
 ```
 
-4. 啟動應用程式：
+4. Start the application:
 
 ```bash
 yarn start
-# 或
+# or
 npm start
 ```
 
-5. 在瀏覽器中開啟 [http://localhost:3000](http://localhost:3000) 查看應用程式
+5. Open [http://localhost:3000](http://localhost:3000) in your browser to view the application
 
-## 使用指南
+## Usage Guide
 
-### 瀏覽區塊與交易
+### Browse Blocks and Transactions
 
-- 首頁顯示最新的區塊和交易
-- 點擊區塊號碼可查看區塊詳情
-- 點擊交易雜湊可查看交易詳情
-- 點擊地址可查看地址資訊
+- Homepage displays latest blocks and transactions
+- Click on block numbers to view block details
+- Click on transaction hashes to view transaction details
+- Click on addresses to view address information
 
-### 搜尋功能
+### Search Functionality
 
-支援三種搜尋方式：
-- 區塊號碼：輸入數字 (例如 `17525775`)
-- 交易雜湊：輸入以 0x 開頭的 66 字元雜湊值
-- 地址：輸入以 0x 開頭的 42 字元以太坊地址
+Supports three search methods:
+- Block number: Enter numbers (e.g., `17525775`)
+- Transaction hash: Enter 66-character hash starting with 0x
+- Address: Enter 42-character Ethereum address starting with 0x
 
-## 架構說明
+## Architecture Overview
 
-- `App.js` - 應用程式主入口，設定路由和 Alchemy SDK
-- `components/` - 應用程式的各個組件
-  - `Home.js` - 首頁，顯示最新區塊和交易
-  - `BlockDetails.js` - 區塊詳情頁
-  - `TransactionDetails.js` - 交易詳情頁
-  - `Address.js` - 地址詳情頁
-  - `SearchBar.js` - 搜尋功能組件
+- `App.js` - Main application entry point, sets up routing and Alchemy SDK
+- `components/` - Application components
+  - `Home.js` - Homepage displaying latest blocks and transactions
+  - `BlockDetails.js` - Block detail page
+  - `TransactionDetails.js` - Transaction detail page
+  - `Address.js` - Address detail page
+  - `SearchBar.js` - Search functionality component
 
-## 延伸功能
+## Future Enhancements
 
-未來可考慮添加的功能：
-- 顯示 ERC-721 (NFT) 資訊
-- 交易監控與通知
-- 合約源碼驗證與互動
-- Gas 價格追蹤器
-- ENS (以太坊域名服務) 支援
+Potential features to consider adding:
+- Display ERC-721 (NFT) information
+- Transaction monitoring and notifications
+- Contract source code verification and interaction
+- Gas price tracker
+- ENS (Ethereum Name Service) support
 
-## 注意事項
+## Important Notes
 
-- 本應用程式使用 Alchemy API 連接以太坊網路，對 API 請求次數有限制
-- 為避免超過 API 限制，部分功能（如歷史交易數據）有所限制
-- 若需要完整的交易歷史數據，請考慮使用付費版 API 或存取自託管節點
+- This application uses Alchemy API to connect to the Ethereum network, which has API request limitations
+- To avoid exceeding API limits, some features (such as historical transaction data) are limited
+- For complete transaction history data, consider using paid API versions or accessing self-hosted nodes
 
-## 授權協議
+## License
 
 MIT License
 
 ---
 
-*此專案是作為學習以太坊區塊鏈開發的一部分而創建的，靈感來自 Etherscan 等區塊瀏覽器。*
+*This project was created as part of learning Ethereum blockchain development, inspired by block explorers like Etherscan.*

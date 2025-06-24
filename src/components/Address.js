@@ -10,19 +10,19 @@ const Address = ({ alchemy }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // 格式化 ETH 值 (從 Wei 轉換為 ETH)
+  // Format ETH value (convert from Wei to ETH)
   const formatEther = (wei) => {
     if (!wei) return '0 ETH';
     return `${parseFloat(utils.formatEther(wei)).toFixed(6)} ETH`;
   };
 
-  // 格式化地址：縮短顯示
+  // Format address: shorten display
   const formatAddress = (addr) => {
     if (!addr) return '';
     return `${addr.slice(0, 6)}...${addr.slice(-4)}`;
   };
 
-  // 格式化代幣數量
+  // Format token balance
   const formatTokenBalance = (balance, decimals) => {
     if (!balance) return '0';
     return parseFloat(utils.formatUnits(balance, decimals)).toFixed(4);
@@ -34,16 +34,16 @@ const Address = ({ alchemy }) => {
         setLoading(true);
         setError(null);
 
-        // 獲取地址餘額
+        // Get address balance
         const ethBalance = await alchemy.core.getBalance(address);
         setBalance(ethBalance);
 
-        // 嘗試獲取地址交易
+        // Try to get address transactions
         try {
-          // 無法直接獲取全部交易，只試用 Alchemy 的資產 API 獲取代幣餘額
+          // Unable to get all transactions directly, just try using Alchemy's assets API to get token balances
           const tokens = await alchemy.core.getTokenBalances(address);
           
-          // 獲取每個代幣的元數據
+          // Get metadata for each token
           const tokenMetadataPromises = [];
           for (let i = 0; i < tokens.tokenBalances.length; i++) {
             const tokenData = tokens.tokenBalances[i];
@@ -53,10 +53,10 @@ const Address = ({ alchemy }) => {
             }
           }
 
-          // 等待所有元數據獲取
+          // Wait for all metadata to be fetched
           const tokenMetadata = await Promise.all(tokenMetadataPromises);
           
-          // 整合代幣列表
+          // Integrate token list
           const formattedTokens = [];
           let j = 0;
           for (let i = 0; i < tokens.tokenBalances.length; i++) {
@@ -74,13 +74,13 @@ const Address = ({ alchemy }) => {
           setTokenBalances(formattedTokens);
         } catch (err) {
           console.error('Error fetching token balances:', err);
-          // 代幣餘額獲取失敗不應導致整體清單
+          // Token balance fetch failure should not cause overall failure
         }
 
         setLoading(false);
       } catch (err) {
         console.error('Error fetching address data:', err);
-        setError('獲取地址數據時發生錯誤。請稍後再試。');
+        setError('Error occurred while fetching address data. Please try again later.');
         setLoading(false);
       }
     };
@@ -102,30 +102,30 @@ const Address = ({ alchemy }) => {
 
   return (
     <div className="detail-container">
-      <h2>地址詳情</h2>
+      <h2>Address Details</h2>
 
       <div className="detail-card">
-        <div className="detail-header">概覽</div>
+        <div className="detail-header">Overview</div>
         <div className="detail-row">
-          <span className="detail-label">地址：</span>
+          <span className="detail-label">Address:</span>
           <span className="detail-value hash-value">{address}</span>
         </div>
         <div className="detail-row">
-          <span className="detail-label">ETH 餘額：</span>
+          <span className="detail-label">ETH Balance:</span>
           <span className="detail-value">{formatEther(balance)}</span>
         </div>
       </div>
 
       {tokenBalances.length > 0 && (
         <div className="detail-card">
-          <div className="detail-header">ERC-20 代幣 ({tokenBalances.length})</div>
+          <div className="detail-header">ERC-20 Tokens ({tokenBalances.length})</div>
           <div className="table-container">
             <table>
               <thead>
                 <tr>
-                  <th>代幣</th>
-                  <th>餘額</th>
-                  <th>合約地址</th>
+                  <th>Token</th>
+                  <th>Balance</th>
+                  <th>Contract Address</th>
                 </tr>
               </thead>
               <tbody>
@@ -164,10 +164,10 @@ const Address = ({ alchemy }) => {
       )}
 
       <div className="detail-note">
-        <p>注意事項：</p>
+        <p>Note:</p>
         <ul>
-          <li>由於以太坊網絡 API 的限制，無法在瀏覽器中顯示全部交易歷史。</li>
-          <li>如需查看完整的交易歷史，請使用如 Etherscan 之類的完整區塊瀏覽器。</li>
+          <li>Due to Ethereum network API limitations, complete transaction history cannot be displayed in the browser.</li>
+          <li>For complete transaction history, please use full block explorers like Etherscan.</li>
         </ul>
       </div>
     </div>

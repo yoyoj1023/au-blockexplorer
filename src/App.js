@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 
 import './App.css';
 
-// 組件
+// Components
 import Home from './components/Home';
 import BlockDetails from './components/BlockDetails';
 import TransactionDetails from './components/TransactionDetails';
@@ -15,7 +15,7 @@ import SearchBar from './components/SearchBar';
 // keys in client-side code. You should never do this in production
 // level code.
 const settings = {
-  apiKey: process.env.REACT_APP_ALCHEMY_API_KEY || 'ITQvRYFiUTS6lxnjJ2Gl3Cz7-BDgWUDP', // 使用環境變數或默認值
+  apiKey: process.env.REACT_APP_ALCHEMY_API_KEY || 'ITQvRYFiUTS6lxnjJ2Gl3Cz7-BDgWUDP', // Use environment variable or default value
   network: Network.ETH_MAINNET,
 };
 
@@ -33,7 +33,7 @@ function App() {
       <div className="App">
         <header className="App-header">
           <h1>
-            <Link to="/" className="header-link">以太坊區塊瀏覽器</Link>
+            <Link to="/" className="header-link">Ethereum Block Explorer</Link>
           </h1>
           <SearchBar />
         </header>
@@ -56,7 +56,7 @@ function App() {
         </main>
         
         <footer className="App-footer">
-          <p>以太坊區塊瀏覽器 - AU課程專案</p>
+          <p>Ethereum Block Explorer - AU Course Project</p>
         </footer>
       </div>
     </Router>

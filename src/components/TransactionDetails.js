@@ -10,23 +10,23 @@ const TransactionDetails = ({ alchemy }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // 格式化 ETH 值 (從 Wei 轉換為 ETH)
+  // Format ETH value (convert from Wei to ETH)
   const formatEther = (wei) => {
     if (!wei) return '0 ETH';
     return `${parseFloat(utils.formatEther(wei)).toFixed(6)} ETH`;
   };
 
-  // 格式化時間戳為可讀格式
+  // Format timestamp to readable format
   const formatTimestamp = (timestamp) => {
     if (!timestamp) return '';
     const date = new Date(timestamp * 1000);
     return date.toLocaleString();
   };
 
-  // 交易狀態
+  // Transaction status
   const getTransactionStatus = (receipt) => {
-    if (!receipt) return '等待中';
-    return receipt.status ? '成功' : '失敗';
+    if (!receipt) return 'Pending';
+    return receipt.status ? 'Success' : 'Failed';
   };
 
   useEffect(() => {
@@ -35,12 +35,12 @@ const TransactionDetails = ({ alchemy }) => {
         setLoading(true);
         setError(null);
 
-        // 獲取交易資訊
+        // Get transaction information
         const transaction = await alchemy.core.getTransaction(txHash);
         setTxData(transaction);
 
         if (transaction) {
-          // 獲取交易收據
+          // Get transaction receipt
           const receipt = await alchemy.core.getTransactionReceipt(txHash);
           setTxReceipt(receipt);
         }
@@ -48,7 +48,7 @@ const TransactionDetails = ({ alchemy }) => {
         setLoading(false);
       } catch (err) {
         console.error('Error fetching transaction data:', err);
-        setError('獲取交易數據時發生錯誤。請稍後再試。');
+        setError('Error occurred while fetching transaction data. Please try again later.');
         setLoading(false);
       }
     };
@@ -69,49 +69,49 @@ const TransactionDetails = ({ alchemy }) => {
   }
 
   if (!txData) {
-    return <div className="error-message">找不到指定的交易</div>;
+    return <div className="error-message">Cannot find the specified transaction</div>;
   }
 
   return (
     <div className="detail-container">
-      <h2>交易詳情</h2>
+      <h2>Transaction Details</h2>
 
       <div className="detail-card">
-        <div className="detail-header">概覽</div>
+        <div className="detail-header">Overview</div>
         <div className="detail-row">
-          <span className="detail-label">交易哈希：</span>
+          <span className="detail-label">Transaction Hash:</span>
           <span className="detail-value hash-value">{txData.hash}</span>
         </div>
         <div className="detail-row">
-          <span className="detail-label">狀態：</span>
+          <span className="detail-label">Status:</span>
           <span className="detail-value">
             {getTransactionStatus(txReceipt)}
             {txReceipt && txReceipt.status ? ' ✅' : txReceipt ? ' ❌' : ' ⏳'}
           </span>
         </div>
         <div className="detail-row">
-          <span className="detail-label">區塊：</span>
+          <span className="detail-label">Block:</span>
           <span className="detail-value">
             {txData.blockNumber ? (
               <Link to={`/block/${txData.blockNumber}`} className="block-link">
                 {txData.blockNumber}
               </Link>
             ) : (
-              '等待中'
+              'Pending'
             )}
           </span>
         </div>
         {txReceipt && txReceipt.timestamp && (
           <div className="detail-row">
-            <span className="detail-label">時間戳：</span>
+            <span className="detail-label">Timestamp:</span>
             <span className="detail-value">
               {formatTimestamp(txReceipt.timestamp)}
-              {txReceipt.timestamp && ` (${formatDistanceToNow(new Date(txReceipt.timestamp * 1000))} 前)`}
+              {txReceipt.timestamp && ` (${formatDistanceToNow(new Date(txReceipt.timestamp * 1000))} ago)`}
             </span>
           </div>
         )}
         <div className="detail-row">
-          <span className="detail-label">從：</span>
+          <span className="detail-label">From:</span>
           <span className="detail-value">
             <Link to={`/address/${txData.from}`} className="address-link">
               {txData.from}
@@ -119,20 +119,20 @@ const TransactionDetails = ({ alchemy }) => {
           </span>
         </div>
         <div className="detail-row">
-          <span className="detail-label">至：</span>
+          <span className="detail-label">To:</span>
           <span className="detail-value">
             {txData.to ? (
               <Link to={`/address/${txData.to}`} className="address-link">
                 {txData.to}
               </Link>
             ) : (
-              '合約創建'
+              'Contract Creation'
             )}
           </span>
         </div>
         {txReceipt && txReceipt.contractAddress && (
           <div className="detail-row">
-            <span className="detail-label">創建的合約：</span>
+            <span className="detail-label">Created Contract:</span>
             <span className="detail-value">
               <Link to={`/address/${txReceipt.contractAddress}`} className="address-link">
                 {txReceipt.contractAddress}
@@ -141,42 +141,42 @@ const TransactionDetails = ({ alchemy }) => {
           </div>
         )}
         <div className="detail-row">
-          <span className="detail-label">值：</span>
+          <span className="detail-label">Value:</span>
           <span className="detail-value">{formatEther(txData.value)}</span>
         </div>
         <div className="detail-row">
-          <span className="detail-label">交易費用：</span>
+          <span className="detail-label">Transaction Fee:</span>
           <span className="detail-value">
             {txReceipt
               ? formatEther(txData.gasPrice.mul(txReceipt.gasUsed))
-              : '計算中...'}
+              : 'Calculating...'}
           </span>
         </div>
         <div className="detail-row">
-          <span className="detail-label">Gas 價格：</span>
+          <span className="detail-label">Gas Price:</span>
           <span className="detail-value">
             {parseFloat(utils.formatUnits(txData.gasPrice, 'gwei')).toFixed(2)} Gwei
           </span>
         </div>
         <div className="detail-row">
-          <span className="detail-label">Gas 限制：</span>
+          <span className="detail-label">Gas Limit:</span>
           <span className="detail-value">{parseInt(txData.gasLimit.toString()).toLocaleString()}</span>
         </div>
         {txReceipt && (
           <div className="detail-row">
-            <span className="detail-label">Gas 已使用：</span>
+            <span className="detail-label">Gas Used:</span>
             <span className="detail-value">
               {parseInt(txReceipt.gasUsed.toString()).toLocaleString()} ({((parseInt(txReceipt.gasUsed) / parseInt(txData.gasLimit)) * 100).toFixed(2)}%)
             </span>
           </div>
         )}
         <div className="detail-row">
-          <span className="detail-label">Nonce：</span>
+          <span className="detail-label">Nonce:</span>
           <span className="detail-value">{txData.nonce}</span>
         </div>
         {txData.data && txData.data !== '0x' && (
           <div className="detail-row">
-            <span className="detail-label">輸入數據：</span>
+            <span className="detail-label">Input Data:</span>
             <span className="detail-value hash-value">{txData.data}</span>
           </div>
         )}
@@ -184,15 +184,15 @@ const TransactionDetails = ({ alchemy }) => {
 
       {txReceipt && txReceipt.logs && txReceipt.logs.length > 0 && (
         <div className="detail-card">
-          <div className="detail-header">事件日誌 ({txReceipt.logs.length})</div>
+          <div className="detail-header">Event Logs ({txReceipt.logs.length})</div>
           <div className="table-container">
             <table>
               <thead>
                 <tr>
-                  <th>索引</th>
-                  <th>地址</th>
-                  <th>主題</th>
-                  <th>數據</th>
+                  <th>Index</th>
+                  <th>Address</th>
+                  <th>Topics</th>
+                  <th>Data</th>
                 </tr>
               </thead>
               <tbody>
@@ -208,14 +208,14 @@ const TransactionDetails = ({ alchemy }) => {
                       {log.topics.length > 0 ? (
                         <span className="hash-value">{`${log.topics[0].slice(0, 10)}...`}</span>
                       ) : (
-                        '無'
+                        'None'
                       )}
                     </td>
                     <td>
                       {log.data && log.data !== '0x' ? (
                         <span className="hash-value">{`${log.data.slice(0, 10)}...`}</span>
                       ) : (
-                        '無'
+                        'None'
                       )}
                     </td>
                   </tr>
